@@ -1,0 +1,6 @@
+.netlify/
+.parcel-cache/
+node_modules/
+dist
+netlify.toml
+.env
