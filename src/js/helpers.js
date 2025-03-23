@@ -12,7 +12,7 @@ export const fetchDataProgram = async function(url, cinema) {
   try {
     // const req = fetch(url); //local, with cors broser extension
     // local node server : prod
-    const req = process.env.NODE_ENV === 'development' ? fetch(`http://localhost:3000/?url=${decodeURIComponent(url)}`) : fetch(`/?url=${encodeURIComponent(url)}`);
+    const req = process.env.NODE_ENV === 'development' ? fetch(`http://localhost:3000/fetch?url=${decodeURIComponent(url)}`) : fetch(`/fetch?url=${encodeURIComponent(url)}`);
     
     const res = await Promise.race([req, timeout(TIMEOUT_SEC)]);
     // const res = await Promise.race([req, timeout(.5)]);
@@ -39,7 +39,7 @@ export const fetchDataMovie = async function(movieUrl) {
   try {
     // const req = fetch(movieUrl); //local, with cors broser extension
     // local node server : prod
-    const req = process.env.NODE_ENV === 'development' ? fetch(`http://localhost:3000/?url=${decodeURIComponent(movieUrl)}`) : fetch(`/?url=${encodeURIComponent(movieUrl)}`);
+    const req = process.env.NODE_ENV === 'development' ? fetch(`http://localhost:3000/fetch?url=${decodeURIComponent(movieUrl)}`) : fetch(`/fetch?url=${encodeURIComponent(movieUrl)}`);
 
     const res = await Promise.race([req, timeout(TIMEOUT_SEC)]);
     // const res = await Promise.race([req, timeout(.5)]);
@@ -51,4 +51,4 @@ export const fetchDataMovie = async function(movieUrl) {
   } catch(err) {
     throw err;
   }
-}
+};

@@ -6,12 +6,14 @@ import serverless from 'serverless-http';
 const app = express();
 app.use(cors());
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+if (process.env.NODE_ENV === 'development') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+};
 
-app.get('/', async (req, res) => {
+app.get('/fetch', async (req, res) => {
   // console.log(req.originalUrl);
-  const url = decodeURIComponent(req.originalUrl.substring(6));
+  const url = decodeURIComponent(req.originalUrl.substring(11));
   // console.log(url);
   
   try {

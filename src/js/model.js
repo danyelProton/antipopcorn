@@ -81,7 +81,7 @@ export const getProgramLumiereFilmEurope = async function(url, cinema) {
     state.cinemaProgram.push(...programDetails);
     // console.log(state);
   } catch(err) {
-    console.log(err);
+    // console.log(err);
     throw err;
   }
 };
@@ -140,7 +140,7 @@ export const getProgramNostalgiaMladost = async function(url, cinema) {
     state.cinemaProgram.push(...programDetails);
     // console.log(state);
   } catch(err) {
-    console.log(err);
+    // console.log(err);
     throw err;
   } 
 };
@@ -308,7 +308,7 @@ export const getMovieDetails = async function(movieUrl, cinema) {
     state.movieDetail.youtubeId = youtubeId;
     // console.log(state);
   } catch(err) {
-    console.log(err);
+    // console.log(err);
     throw err;
   }
 };

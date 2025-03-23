@@ -5,13 +5,12 @@
   "type": "module",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "node functions/server.js",
-    "start-dev": "node --watch --watch-path=./functions functions/server.js",
-    "parcel-dev": "parcel index.html",
-    "parcel-prod": "SET NODE_ENV=production&parcel index.html",
+    "start": "SET NODE_ENV=production&node functions/server.js",
+    "start-dev": "SET NODE_ENV=development&node --watch --watch-path=./functions functions/server.js",
+    "parcel": "parcel index.html",
     "prebuild": "rmdir dist /s /q",
     "build": "parcel build index.html --no-cache",
-    "deploy-prod": "netlify deploy --prod",
+    "deploy": "netlify deploy --prod",
     "netlify": "netlify"
   },
   "keywords": [],
