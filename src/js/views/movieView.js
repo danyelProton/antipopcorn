@@ -46,12 +46,28 @@ class MovieView extends View {
     }.bind(this));
   }
 
+  checkImgLoaded(movie) {
+    const img = movie.querySelector('.media__img');
+    const height = movie.querySelector('.details__media').getBoundingClientRect().width / 1.7787;
+    const loaderBox = movie.querySelector('.loader-box');
+    loaderBox.style.position = 'relative';
+    loaderBox.style.height = `${height}px`;
+
+    img.addEventListener('load', () => {
+      img.classList.remove('hidden');
+      movie.querySelector('.loader-box').remove();
+      loaderBox.style.removeProperty('position');
+    }, { once: true });
+  }
 
   generateMarkup() {
     return `
       <div class="movie__details-box container-inner">
         <section class="details__media">
-          <img class="media__img" src="${this.data.image}" alt="${this.data.titleOriginal}">
+          <div class="loader-box">
+            <div class="loader"></div>
+          </div>
+          <img class="media__img hidden" src="${this.data.image}" alt="${this.data.titleOriginal}">
           ${this.data.youtubeId ? `<button class="media__trailer" data-yt="${this.data.youtubeId}"><span class="trailer-icon"></span>Trailer</button>` : ''}
         </section>
 

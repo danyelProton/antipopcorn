@@ -81,6 +81,9 @@ const controlMovieDetails = async function(movie, render = true) {
     // render movie details
     if (render) movieView.render(model.state.movieDetail);
 
+    // remove loader (from html markup) when image loaded
+    if (render) movieView.checkImgLoaded(movie);
+
     // make links in movie description content (if any) open in new tab
     if (render) [...movie.querySelectorAll('.description__content a')]?.forEach(link => {
       link.setAttribute('target', '_blank');
