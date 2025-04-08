@@ -1,4 +1,6 @@
 import View from './view.js';
+import fallbackImg from 'url:../../img/fallback-img.png';
+import { IMG_TIMEOUT_SEC } from '../config.js';
 
 class MovieView extends View {
   parentEl = ''; // movie details box of clicked movie (declared in event listener)
@@ -28,6 +30,7 @@ class MovieView extends View {
       if (!movieOverview) return;
 
       const movie = e.target.closest('.movie');
+      
       const movieDetailsBox = movie.querySelector('.movie__details');
 
       // if movie already active, remove active (collapse accordion); else if program details exist (had been already clicked on movie) then handler f without rendering; else render movie details (remove error if there's one)
@@ -42,6 +45,7 @@ class MovieView extends View {
         this.parentEl = movieDetailsBox;
         await handler(movie);
         // console.log(movie);
+        // console.log(this.data);
       };
     }.bind(this));
   }
@@ -50,14 +54,30 @@ class MovieView extends View {
     const img = movie.querySelector('.media__img');
     const height = movie.querySelector('.details__media').getBoundingClientRect().width / 1.7787;
     const loaderBox = movie.querySelector('.loader-box');
-    loaderBox.style.position = 'relative';
-    loaderBox.style.height = `${height}px`;
+    const imgMarginBottom = parseFloat(getComputedStyle(img).marginBottom);
+    const imgBorderBottom = parseFloat(getComputedStyle(img).borderBottomWidth);
 
-    img.addEventListener('load', () => {
+    loaderBox.style.position = 'relative';
+    loaderBox.style.height = `${height + imgMarginBottom + (2 * imgBorderBottom)}px`;
+
+    let loaded = false;
+
+    const removeLoader = () => {
       img.classList.remove('hidden');
-      movie.querySelector('.loader-box').remove();
+      loaderBox.remove();
       loaderBox.style.removeProperty('position');
-    }, { once: true });
+      loaded = true;
+    };
+
+    img.addEventListener('load', removeLoader, { once: true });
+
+    setTimeout(() => {
+      if (!loaded) {
+        removeLoader();
+        img.setAttribute('src', fallbackImg);
+        img.setAttribute('alt', 'antipopcorn logo');
+      };
+    }, IMG_TIMEOUT_SEC * 1000);
   }
 
   generateMarkup() {

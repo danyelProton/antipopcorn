@@ -8,3 +8,4 @@ export const NOSTALGIA_ID = 'NOS';
 export const MLADOST_ID = 'MLA';
 export const RESULTS_PER_PAGE = 30;
 export const TIMEOUT_SEC = 7;
+export const IMG_TIMEOUT_SEC = 3.5;

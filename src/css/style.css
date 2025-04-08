@@ -1079,7 +1079,7 @@ option {
   .details__media {
     display: flex;
     flex-direction: column;
-    width: max-content;
+    /* width: max-content; */
   }
 
   .details__description {

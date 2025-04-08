@@ -30,8 +30,8 @@ const controlCinemaProgram = async function() {
     // console.log(model.state);
 
     // remove loader
-    document.querySelector('.loader-box').remove();
-    // programView.clear(); //pouzit, ked bude prec test movie
+    // document.querySelector('.program > .loader-box').remove(); // use with a test movie
+    programView.clear(); // use in prod
 
     // render program
     programView.render(model.state.cinemaProgram.slice(0, RESULTS_PER_PAGE));
@@ -76,7 +76,7 @@ const controlMovieDetails = async function(movie, render = true) {
     if (render) await model.getMovieDetails(movie.dataset.movieUrl, movie.dataset.cinema);
 
     // remove loader
-    if (render) document.querySelector('.loader-box').remove();
+    if (render) movie.querySelector('.loader-box').remove();
 
     // render movie details
     if (render) movieView.render(model.state.movieDetail);
@@ -106,7 +106,7 @@ const controlPagination = function() {
   model.state.page++;
   // console.log(model.state.page);
   document.querySelector('.load-more').remove();
-  document.querySelector('.loader-box').remove();
+  document.querySelector('.program > .loader-box').remove();
 
   // if filters active get filtered program, otherwise complete program, then render next page (slice)
   programView.render((model.state.filtersActive ? model.state.filteredCinemaProgram : model.state.cinemaProgram).slice((model.state.page - 1) * RESULTS_PER_PAGE, model.state.page * RESULTS_PER_PAGE));
