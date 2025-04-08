@@ -1,18 +1,15 @@
-import View from './view.js';
-
-class ScrollView extends View {
+class ScrollView {
   scrollPos = 0;
   toTopBtn = document.querySelector('.back-to-top-box');
   scrollIntoViewActive = false;
 
   constructor() {
-    super();
     this.backToTop();
-    this.observerHeaderAndFooter();
+    this.#observerHeaderAndFooter();
   }
 
   // scroll event listener callback
-  handleScroll() {
+  #handleScroll() {
     // console.log('scrollY before', window.scrollY);
     // console.log('scrollPos', this.scrollPos);
     // console.log(window.scrollY > this.scrollPos);
@@ -26,7 +23,7 @@ class ScrollView extends View {
   }
 
   // callback bound to this
-  scrollHandler = this.handleScroll.bind(this);
+  scrollHandler = this.#handleScroll.bind(this);
 
   // add scroll event listener
   backToTop() {
@@ -36,7 +33,7 @@ class ScrollView extends View {
 
 
   // remove/add scroll event listener based on intersecting header and footer (no back to top btm when footer or header in viewport)
-  observerHeaderAndFooter() {
+  #observerHeaderAndFooter() {
     const header = document.querySelector('.header');
     const footer = document.querySelector('.footer');
     let headerIntersect;

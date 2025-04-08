@@ -16,11 +16,12 @@ class MovieView extends View {
 
   constructor() {
     super();
-    this.showModal();
-    this.closeModalCloseBtn();
-    this.closeModalEscape();
-    this.closeModalOverlayClick();
+    this.#showModal();
+    this.#closeModalCloseBtn();
+    this.#closeModalEscape();
+    this.#closeModalOverlayClick();
   }
+
 
   addHandlerRenderMovieDetails(handler) {
     this.program.addEventListener('click', async function(e) {
@@ -50,14 +51,16 @@ class MovieView extends View {
     }.bind(this));
   }
 
+
+  // render loading component (loader) before img is loaded (img with class hidden until then); load fallback img if original img loading fails
   checkImgLoaded(movie) {
     const img = movie.querySelector('.media__img');
-    const height = movie.querySelector('.details__media').getBoundingClientRect().width / 1.7787;
+    const height = movie.querySelector('.details__media').getBoundingClientRect().width / 1.7787; // loader in the same size as the image
+    const imgMarginBottom = parseFloat(getComputedStyle(img).marginBottom); // plus image margin bottom
+    const imgBorderBottom = parseFloat(getComputedStyle(img).borderBottomWidth); // plus border (bottom + top)
     const loaderBox = movie.querySelector('.loader-box');
-    const imgMarginBottom = parseFloat(getComputedStyle(img).marginBottom);
-    const imgBorderBottom = parseFloat(getComputedStyle(img).borderBottomWidth);
 
-    loaderBox.style.position = 'relative';
+    loaderBox.style.position = 'relative'; // for css
     loaderBox.style.height = `${height + imgMarginBottom + (2 * imgBorderBottom)}px`;
 
     let loaded = false;
@@ -71,6 +74,7 @@ class MovieView extends View {
 
     img.addEventListener('load', removeLoader, { once: true });
 
+    // if timeout, render fallback img
     setTimeout(() => {
       if (!loaded) {
         removeLoader();
@@ -79,6 +83,7 @@ class MovieView extends View {
       };
     }, IMG_TIMEOUT_SEC * 1000);
   }
+
 
   generateMarkup() {
     return `
@@ -95,8 +100,8 @@ class MovieView extends View {
           <h2 class="info__original-title">${this.data.titleOriginal}</h2>
           ${this.data.language ?
             `<p class="info__language">${this.data.language}</p>` : ''}
-          ${this.generateInfoInvolved()}
-          ${this.generateInfoOther()}
+          ${this.#generateInfoInvolved()}
+          ${this.#generateInfoOther()}
         </section>
       </div>
             
@@ -123,7 +128,8 @@ class MovieView extends View {
     `
   }
 
-  generateInfoInvolved() {
+
+  #generateInfoInvolved() {
     if (this.data.director || this.data.actors) {
       return `
         <dl class="info__involved">
@@ -142,12 +148,13 @@ class MovieView extends View {
     } else return '';
   }
 
-  generateInfoOther() {
+
+  #generateInfoOther() {
     if (this.data.year || this.data.length || this.data.genre || this.data.country) {
       return `
         <div class="info__other">
-          ${this.generateInfoOtherValues() ?
-          `<span class="other__year-length-genre">${this.generateInfoOtherValues()}</span>` : ''}
+          ${this.#generateInfoOtherValues() ?
+          `<span class="other__year-length-genre">${this.#generateInfoOtherValues()}</span>` : ''}
           ${this.data.country ?
           `<span class="other__country">${this.data.country}</span>
         </div>` : ''}
@@ -155,7 +162,8 @@ class MovieView extends View {
     } else return '';
   }
 
-  generateInfoOtherValues() {
+
+  #generateInfoOtherValues() {
     const infoOtherArr = [];
     this.data.year ? infoOtherArr[0] = `<strong>${this.data.year}</strong>` : ''; 
     this.data.length ? infoOtherArr[1] = `${this.data.length}` : ''; 
@@ -163,16 +171,19 @@ class MovieView extends View {
     return infoOtherArr.length ? infoOtherArr.filter(value => value).join(' | ') : false;
   }
 
+
   // when modal opened (used for yt trailer), make rest of the page inaccessible for keyboard and screenreaders
   inert() {
     [this.header, this.program, this.backToTop, this.footer].forEach(el => el.inert = true);
   }
 
+
   cancelInert() {
     [this.header, this.program, this.backToTop, this.footer].forEach(el => el.inert = false);
   }
 
-  showModal() {
+
+  #showModal() {
     this.program.addEventListener('click', function(e) {
       if (!e.target.classList.contains('media__trailer')) return;
       // console.log(e.target);
@@ -192,7 +203,8 @@ class MovieView extends View {
     }.bind(this));
   }
 
-  closeModal() {
+
+  #closeModal() {
     this.iframe.setAttribute('src', 'about:blank');
     // document.querySelector('lite-youtube').setAttribute('videoid', '');;
     this.modal.classList.add('hidden');
@@ -204,18 +216,21 @@ class MovieView extends View {
     this.trailerBtn.focus();
   }
  
-  closeModalCloseBtn() {
-    document.querySelector('.close-modal-btn').addEventListener('click', this.closeModal.bind(this));
+
+  #closeModalCloseBtn() {
+    document.querySelector('.close-modal-btn').addEventListener('click', this.#closeModal.bind(this));
   }
 
-  closeModalEscape() {
+
+  #closeModalEscape() {
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) this.closeModal();
+      if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) this.#closeModal();
     }.bind(this));      
   }
 
-  closeModalOverlayClick() {
-    this.overlay.addEventListener('click', this.closeModal.bind(this));
+
+  #closeModalOverlayClick() {
+    this.overlay.addEventListener('click', this.#closeModal.bind(this));
   }
 }
 

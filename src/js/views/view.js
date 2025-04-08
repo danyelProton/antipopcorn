@@ -1,4 +1,4 @@
-import icons from 'url:../../img/icons.svg';
+import errorView from './errorView.js';
 
 export default class View {
   data;
@@ -43,17 +43,9 @@ export default class View {
   }
 
   // error message
-  renderError(message, movieUrl = null) {
-    const markup = `
-      <div class="error-box">
-        <p class="error__msg">${message}${movieUrl ? ` Alebo tu je <a class="error__link" href="${movieUrl}" target="_blank">web filmu</a>.` : ''}</p>
-        <button class="error__reload">
-          <svg class="icon icon-reload">
-            <use href="${icons}#reload"></use>
-          </svg>
-        </button>
-      </div>
-    `;
+  renderError(movieUrl = null) {
+    const markup = errorView.generateMarkup.call(this, movieUrl);
+
     this.clear();
     this.parentEl.insertAdjacentHTML('beforeend', markup);
   }

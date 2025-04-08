@@ -1,6 +1,4 @@
-import View from "./view.js";
-
-class filterView extends View {
+class FilterView {
   addHandlerFilter(handler) {
     document.querySelector('.filter-bar').addEventListener('change', function(e) {
       const value = e.target.value;
@@ -19,4 +17,4 @@ class filterView extends View {
   }
 }
 
-export default new filterView();
+export default new FilterView();

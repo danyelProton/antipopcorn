@@ -1,6 +1,6 @@
-import View from "./view.js";
+import icons from 'url:../../img/icons.svg';
 
-class errorView extends View {
+class ErrorView {
   parentEl = document.querySelector('.program');
 
 
@@ -13,7 +13,20 @@ class errorView extends View {
 
       movie ? await handler(movie) : location.reload();
     });
-  };
+  }
+
+  generateMarkup(movieUrl = null) {
+    return `
+      <div class="error-box">
+        <p class="error__msg">${this.errMsg}${movieUrl ? ` Alebo tu je <a class="error__link" href="${movieUrl}" target="_blank">web filmu</a>.` : ''}</p>
+        <button class="error__reload">
+          <svg class="icon icon-reload">
+            <use href="${icons}#reload"></use>
+          </svg>
+        </button>
+      </div>
+    `;
+  }
 }
 
-export default new errorView();
+export default new ErrorView();

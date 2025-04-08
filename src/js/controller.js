@@ -40,7 +40,7 @@ const controlCinemaProgram = async function() {
     if (model.state.cinemaProgram.length > RESULTS_PER_PAGE) programView.renderLoadMore();
   } catch(err) {
     // console.error(err);
-    programView.renderError(programView.errMsg);
+    programView.renderError();
   }
 };
 
@@ -95,7 +95,7 @@ const controlMovieDetails = async function(movie, render = true) {
     // console.error(err);
     // scroll into view even if error
     setTimeout(() => movie.scrollIntoView({behavior: 'smooth'}),100);
-    movieView.renderError(movieView.errMsg, movie.dataset.movieUrl);
+    movieView.renderError(movie.dataset.movieUrl);
   }
 };
 
