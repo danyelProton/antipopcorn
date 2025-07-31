@@ -21,7 +21,7 @@ const controlCinemaProgram = async function() {
 
     // get cinema programs
     await model.getProgramLumiereFilmEurope(LUMIERE_URL, LUMIERE_ID);
-    await model.getProgramLumiereFilmEurope(FILM_EUROPE_URL, FILM_EUROPE_ID);
+    // await model.getProgramLumiereFilmEurope(FILM_EUROPE_URL, FILM_EUROPE_ID); // Film Europe changed website
     await model.getProgramNostalgiaMladost(NOSTALGIA_URL, NOSTALGIA_ID);
     await model.getProgramNostalgiaMladost(MLADOST_URL, MLADOST_ID);
 
