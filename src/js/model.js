@@ -87,6 +87,60 @@ export const getProgramLumiereFilmEurope = async function(url, cinema) {
 };
 
 
+// Film Europe only - new website
+export const getProgramFilmEurope = async function(url, cinema) {
+  try {
+    const programList = await fetchDataProgram(url, cinema);
+
+    const today = new Date().toLocaleDateString();
+    const tomorrow = addDays(today, 1).toLocaleDateString();
+    // console.log(today, tomorrow);
+
+
+    const programDetails = programList.map((mov, i) => {
+      const date = new Date(mov.startsAt);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = date.toLocaleString('sk-SK', { month: 'long' }).slice(0, 3);
+
+      let weekday;
+      if (date.toLocaleDateString() === today) {
+        weekday = 'dnes';
+      } else if (date.toLocaleDateString() === tomorrow) {
+        weekday = 'zajtra';
+      } else {
+        weekday = date.toLocaleString('sk-SK', { weekday: 'long' });
+      };
+
+      const time = date.toLocaleString('sk-SK', { hour: '2-digit', minute: '2-digit' });
+      const title = mov.names.sk;
+      const id = mov.show.id;
+      const url = 'https://www.kino.filmeurope.sk/film/' + id;
+
+      return {
+        cinemaShort: cinema,
+        cinema: cinema === 'LUM' ? 'Lumière' : 'Film Europe',
+        // dateString,
+        date,
+        day,
+        month,
+        weekday,
+        time,
+        title,
+        id,
+        url,
+      };
+    });
+
+    // console.log(programDetails);
+    state.cinemaProgram.push(...programDetails);
+    // console.log(state);
+  } catch(err) {
+    // console.log(err);
+    throw err;
+  }
+};
+
+
 
 export const getProgramNostalgiaMladost = async function(url, cinema) {
   try {
@@ -172,8 +226,9 @@ export const getMovieDetails = async function(movieUrl, cinema) {
     const tableRowsLumFeu = [...html.querySelectorAll('tr')];
     const detailTabLumFeu = [...html.querySelectorAll('#lavyPanel > .detailfullsize > .padding')];
 
-    // LUMIERE OR FILM EUROPE
-    if (cinema === 'LUM' || cinema === 'FEU') {
+    // LUMIERE OR FILM EUROPE (JUST LUMIERE - FE WEBSITE CHANGED)
+    // if (cinema === 'LUM' || cinema === 'FEU') {
+    if (cinema === 'LUM') {
       language = [...html.querySelectorAll('.iconsContainer > .btn')].filter(el => el.className === 'btn').map(el => el.attributes.title.textContent).join(', ');
       // console.log(language);
       genre = tableRowsLumFeu.filter(row => row.children[0].textContent === 'Žáner:')[0]?.children[1].textContent;
@@ -222,15 +277,18 @@ export const getMovieDetails = async function(movieUrl, cinema) {
       // console.log(year);
     };
 
+    // FILM EUROPE - FE WEBSITE CHANGED
+    // if (cinema === 'FEU') {
+    //   titleOriginal = html.querySelector('.info > .right > h1').attributes?.title?.textContent.trim() ?? html.querySelector('.info > .right > h1').textContent.trim();
+    //   // console.log(titleOriginal);
+    //   country = [...html.querySelectorAll('.detailfullsize > .padding > .flags > li')].map(country => country.textContent.trim()).join(', ');
+    //   // console.log(country);
+    //   year = [...html.querySelectorAll('.detailfullsize > .padding > p')].map(el => [...el.childNodes]).flat().filter(el => el.previousSibling?.textContent === 'Rok výroby:')[0]?.textContent.trim();
+    //   // console.log(year);
+    // };
+
+
     // FILM EUROPE
-    if (cinema === 'FEU') {
-      titleOriginal = html.querySelector('.info > .right > h1').attributes?.title?.textContent.trim() ?? html.querySelector('.info > .right > h1').textContent.trim();
-      // console.log(titleOriginal);
-      country = [...html.querySelectorAll('.detailfullsize > .padding > .flags > li')].map(country => country.textContent.trim()).join(', ');
-      // console.log(country);
-      year = [...html.querySelectorAll('.detailfullsize > .padding > p')].map(el => [...el.childNodes]).flat().filter(el => el.previousSibling?.textContent === 'Rok výroby:')[0]?.textContent.trim();
-      // console.log(year);
-    };
 
 
     // NOSTALGIA AND MLADOST (get some information helper function)

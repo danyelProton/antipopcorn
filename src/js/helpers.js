@@ -26,7 +26,17 @@ export const fetchDataProgram = async function(url, cinema) {
     const html = cinema === 'LUM' || cinema === 'FEU' ? new DOMParser().parseFromString(data, 'text/html') : new DOMParser().parseFromString(data.html, 'text/html');
     // console.log(html);
 
-    const movieList = cinema === 'LUM' || cinema === 'FEU' ? [...html.querySelectorAll('.calendar-left-table-tr')] : [...html.querySelectorAll('.media')];
+    let movieList;
+    if (cinema === 'LUM') movieList = [...html.querySelectorAll('.calendar-left-table-tr')]; // returns array of html elements
+    if (cinema === 'FEU') {
+      const eventsListFromScript = [...html.querySelectorAll('script')].find(el => el.textContent.includes('15:[\\\"$\\\",\\\"$L1d\\\",\\\"eventsList-1')).textContent;
+      const regexEventsList = /{\\"events\\":(.*),\\"localeCode\\":/m;
+      eventsListMatchGroup = eventsListFromScript.match(regexEventsList)[1];
+      movieList = JSON.parse(JSON.parse(`"${eventsListMatchGroup}"`));
+    }; // returns array of json objects
+    if (cinema === 'MLA' || cinema === 'NOS') movieList = [...html.querySelectorAll('.media')]; // returns array of html elements
+
+    // const movieList = cinema === 'LUM' || cinema === 'FEU' ? [...html.querySelectorAll('.calendar-left-table-tr')] : [...html.querySelectorAll('.media')];
     // console.log(movieList);
 
     return movieList;
