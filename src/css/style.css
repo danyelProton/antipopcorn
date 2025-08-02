@@ -86,6 +86,29 @@ body {
   box-shadow: 0 0 0 2px var(--main);
 }
 
+::selection {
+  background: var(--main);
+  color: var(--white);
+}
+
+.active.movie[data-cinema="LUM"] *::selection {
+  background: var(--black);
+}
+
+.active.movie[data-cinema="FEU"] *::selection {
+  background: var(--feu);
+}
+
+.active.movie[data-cinema="NOS"] *::selection {
+  background: var(--nos);
+}
+
+.active.movie[data-cinema="MLA"] *::selection {
+  background: var(--mla);
+}
+
+
+
 /* ************************************ */
 /* GENERAL */
 /* ************************************ */
