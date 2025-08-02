@@ -288,7 +288,41 @@ export const getMovieDetails = async function(movieUrl, cinema) {
     // };
 
 
-    // FILM EUROPE
+    // FILM EUROPE - NEW WEBSITE
+    if (cinema === 'FEU') {
+      const webContentFromScript = [...html.body.querySelectorAll('script')].find(el => el.textContent.includes('16:[\\\"$\\\",\\\"div\\\",\\\"showDetail-1')).textContent;
+      // console.log(webContentFromScript);
+      const regexContent = /self\.__next_f\.push\(\[1,"16:(.+)\\n"\]\)/m;
+      const webContentMatchGroup = webContentFromScript.match(regexContent)[1];
+      // console.log(webContentMatchGroup);
+      const parsedWebContent = JSON.parse(JSON.parse(`"${webContentMatchGroup}"`));
+      // console.log(parsedWebContent);
+      const showInfo = parsedWebContent[3].children[0][3].show;
+      // console.log(showInfo);
+
+      titleOriginal = showInfo.originalTitle;
+      // console.log(titleOriginal);
+      country = showInfo.countriesTranslated.map(el => el.sk).join(', ');
+      // console.log(country);
+      language = parsedWebContent[3].children[1][3].events[0].versionTranslated.sk;
+      // console.log(language);
+      year = showInfo.productionYear;
+      // console.log(year);
+      genre = showInfo.genresTranslated.map(el => el.sk).join(', ');
+      // console.log(genre);
+      length = `${showInfo.duration} minút`;
+      // console.log(length);
+      director = showInfo.crew.filter(el => el.crewRoleCode === 'director')[0]?.persons.map(el => el.name).join(', ');
+      // console.log(director);
+      actors = showInfo.crew.filter(el => el.crewRoleCode === 'actor')[0]?.persons.map(el => el.name).join(', ');
+      // console.log(actors);
+      description = showInfo.translations[0].description.length < 5 ? `<p>${showInfo.translations[0].tagline}</p>` : showInfo.translations[0].description;
+      // console.log(description);
+      image = showInfo.coverPrimaryImage.url;
+      // console.log(image);
+      youtubeId = showInfo.videos[0]?.sourceVideoId;
+      // console.log(youtubeId);
+    };
 
 
     // NOSTALGIA AND MLADOST (get some information helper function)
@@ -366,7 +400,7 @@ export const getMovieDetails = async function(movieUrl, cinema) {
     state.movieDetail.youtubeId = youtubeId;
     // console.log(state);
   } catch(err) {
-    // console.log(err);
+    console.log(err);
     throw err;
   }
 };

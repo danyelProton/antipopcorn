@@ -27,6 +27,7 @@ export const fetchDataProgram = async function(url, cinema) {
     // console.log(html);
 
     let movieList;
+    // if (cinema === 'LUM' || cinema === 'FEU') movieList = [...html.querySelectorAll('.calendar-left-table-tr')]; // Film Europe changed website
     if (cinema === 'LUM') movieList = [...html.querySelectorAll('.calendar-left-table-tr')]; // returns array of html elements
     if (cinema === 'FEU') {
       const eventsListFromScript = [...html.querySelectorAll('script')].find(el => el.textContent.includes('15:[\\\"$\\\",\\\"$L1d\\\",\\\"eventsList-1')).textContent;
