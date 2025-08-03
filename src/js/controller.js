@@ -16,6 +16,10 @@ const controlCinemaProgram = async function() {
     // document.querySelector('.header').scrollIntoView({behavior: 'smooth'});
     // window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
 
+    // hard reset filter options for Firefox
+    document.querySelector('.filter__date').value = 'ALL';
+    document.querySelector('.filter__cinema').value = 'ALL';
+
     // render loader
     programView.renderLoader();
 

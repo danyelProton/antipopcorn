@@ -92,20 +92,24 @@ export const getProgramFilmEurope = async function(url, cinema) {
   try {
     const programList = await fetchDataProgram(url, cinema);
 
-    const today = new Date().toLocaleDateString();
-    const tomorrow = addDays(today, 1).toLocaleDateString();
-    // console.log(today, tomorrow);
+    const today = new Date();
+    const todayFormatted = today.toLocaleDateString('sk-SK', { month: '2-digit', day: '2-digit', year: '2-digit' });
+    const tomorrow = addDays(today, 1);
+    const tomorrowFormatted = tomorrow.toLocaleDateString('sk-SK', { month: '2-digit', day: '2-digit', year: '2-digit' });
+    // console.log(todayFormatted, tomorrowFormatted);
+    
 
 
     const programDetails = programList.map((mov, i) => {
       const date = new Date(mov.startsAt);
+
       const day = date.getDate().toString().padStart(2, '0');
       const month = date.toLocaleString('sk-SK', { month: 'long' }).slice(0, 3);
 
       let weekday;
-      if (date.toLocaleDateString() === today) {
+      if (date.toLocaleDateString('sk-SK', { month: '2-digit', day: '2-digit', year: '2-digit' }) === todayFormatted) {
         weekday = 'dnes';
-      } else if (date.toLocaleDateString() === tomorrow) {
+      } else if (date.toLocaleDateString('sk-SK', { month: '2-digit', day: '2-digit', year: '2-digit' }) === tomorrowFormatted) {
         weekday = 'zajtra';
       } else {
         weekday = date.toLocaleString('sk-SK', { weekday: 'long' });

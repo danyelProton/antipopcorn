@@ -32,7 +32,7 @@ export const fetchDataProgram = async function(url, cinema) {
     if (cinema === 'FEU') {
       const eventsListFromScript = [...html.querySelectorAll('script')].find(el => el.textContent.includes('15:[\\\"$\\\",\\\"$L1d\\\",\\\"eventsList-1')).textContent;
       const regexEventsList = /{\\"events\\":(.*),\\"localeCode\\":/m;
-      eventsListMatchGroup = eventsListFromScript.match(regexEventsList)[1];
+      const eventsListMatchGroup = eventsListFromScript.match(regexEventsList)[1];
       movieList = JSON.parse(JSON.parse(`"${eventsListMatchGroup}"`));
     }; // returns array of json objects
     if (cinema === 'MLA' || cinema === 'NOS') movieList = [...html.querySelectorAll('.media')]; // returns array of html elements
@@ -42,6 +42,7 @@ export const fetchDataProgram = async function(url, cinema) {
 
     return movieList;
   } catch(err) {
+    // console.log(err);
     throw err;
   }
 };
