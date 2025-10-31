@@ -294,9 +294,9 @@ export const getMovieDetails = async function(movieUrl, cinema) {
 
     // FILM EUROPE - NEW WEBSITE
     if (cinema === 'FEU') {
-      const webContentFromScript = [...html.body.querySelectorAll('script')].find(el => el.textContent.includes('16:[\\\"$\\\",\\\"div\\\",\\\"showDetail-1')).textContent;
+      const webContentFromScript = [...html.body.querySelectorAll('script')].find(el => el.textContent.includes('17:[\\\"$\\\",\\\"div\\\",\\\"showDetail-1')).textContent;
       // console.log(webContentFromScript);
-      const regexContent = /self\.__next_f\.push\(\[1,"16:(.+)\\n"\]\)/m;
+      const regexContent = /self\.__next_f\.push\(\[1,"17:(.+)\\n"\]\)/m;
       const webContentMatchGroup = webContentFromScript.match(regexContent)[1];
       // console.log(webContentMatchGroup);
       const parsedWebContent = JSON.parse(JSON.parse(`"${webContentMatchGroup}"`));
@@ -308,7 +308,7 @@ export const getMovieDetails = async function(movieUrl, cinema) {
       // console.log(titleOriginal);
       country = showInfo.countriesTranslated.map(el => el.sk).join(', ');
       // console.log(country);
-      language = parsedWebContent[3].children[1][3].events[0].versionTranslated.sk;
+      language = parsedWebContent[3].children[1][3].events[0].versionTranslated?.sk;
       // console.log(language);
       year = showInfo.productionYear;
       // console.log(year);
@@ -322,7 +322,7 @@ export const getMovieDetails = async function(movieUrl, cinema) {
       // console.log(actors);
       description = showInfo.translations[0].description.length < 5 ? `<p>${showInfo.translations[0].tagline}</p>` : showInfo.translations[0].description;
       // console.log(description);
-      image = showInfo.coverPrimaryImage.url;
+      image = showInfo.coverPrimaryImage?.url;
       // console.log(image);
       youtubeId = showInfo.videos[0]?.sourceVideoId;
       // console.log(youtubeId);
