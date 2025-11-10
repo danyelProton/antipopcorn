@@ -166,11 +166,11 @@ export const getProgramNostalgiaMladost = async function(url, cinema) {
         // this date doesn't work in Safari
         // const date = new Date(`${dateStringFull.split('.')[1]}-${dateStringFull.split('.')[0]}-${dateStringFull.split('.')[2]} ${item.querySelector('.btn-buy').textContent}`);
         // works in Safari, format - new Date(2024, 6, 25, 17, 30) (year, month (0-11), day, hour, minute)
-        const date = new Date(dateStringFull.split('.')[2], Number(dateStringFull.split('.')[1]) - 1, dateStringFull.split('.')[0], scrapedBtnBuy.textContent.split(':')[0], scrapedBtnBuy.textContent.split(':')[1]);
+        const date = new Date(dateStringFull.split('.')[2], Number(dateStringFull.split('.')[1]) - 1, dateStringFull.split('.')[0], scrapedBtnBuy?.textContent.split(':')[0] || '09', scrapedBtnBuy?.textContent.split(':')[1] || '00');
         const day = date.getDate().toString().padStart(2, '0');
         const month = date.toLocaleString('sk-SK', {month: 'long'}).slice(0, 3);
         const weekday = item.children[1].textContent.slice(1, -1).toLowerCase();
-        const time = scrapedBtnBuy.textContent;
+        const time = scrapedBtnBuy?.textContent || 'pozri<br>web';
         const title = scrapedLink.textContent;
         const id = cinema === 'NOS' ? 'NOS' + scrapedLink.href.match(regexMovieIdNostalgia).toString().slice(6, -1) : 'MLA' + scrapedLink.href.match(regexMovieIdMladost).toString().slice(5);
         const url = cinema === 'NOS' ? 'https://www.nostalgia.sk' + scrapedLink.pathname : 'https://www.kinomladost.sk' + scrapedLink.pathname;
